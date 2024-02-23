@@ -100,13 +100,13 @@ const useSubmit = () => {
         );
       }
 
-      let messageQueue = [];
+      let messageQueue: string[] = [];
       let streamProcessingCompleted = false;
       async function processMessageQueue() {
         while (!streamProcessingCompleted || messageQueue.length > 0) {
           if (messageQueue.length > 0) {
             let messageContent = messageQueue.shift();
-            const messageLen = messageContent.length;
+            const messageLen = messageContent?.length ?? 0;
             let curChars = '';
             let speed = streamProcessingCompleted
               ? messageLen
@@ -127,7 +127,7 @@ const useSubmit = () => {
           }
         }
       }
-      async function readStream(stream) {
+      async function readStream(stream: ReadableStream<Uint8Array>) {
         if (stream.locked)
           throw new Error(
             'Oops, the stream is locked right now. Please try again'
